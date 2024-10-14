@@ -3,9 +3,6 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixpkgs-unstable";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
-    flake-parts.url = "github:hercules-ci/flake-parts";
-    systems.url = "github:nix-systems/default";
   };
 
   outputs =
@@ -13,41 +10,21 @@
       self,
       systems,
       nixpkgs,
-      treefmt-nix,
-      flake-parts,
     }:
-    flake-parts.lib.mkFlake { inherit inputs; } {
-      imports = [ treefmt-nix.flakeModule ];
-      systems = import inputs.systems;
+    let
+      stdenv = pkgs.stdenv;
+      haxe-lib = import { inherit pkgs; };
+    in
+    {
+      devShells.default = pkgs.mkShell {
+        packages = with pkgs; [
+          nil
+        ];
+      };
 
-      perSystem =
-        {
-          config,
-          pkgs,
-          system,
-          ...
-        }:
-        let
-          stdenv = pkgs.stdenv;
-	  haxe-lib = pkgs.callPackage { inherit pkgs; };
-        in
-        rec {
-          treefmt = {
-            projectRootFile = "flake.nix";
-            programs = {
-              nixfmt.enable = true;
-            };
-
-            settings.formatter = { };
-          };
-
-          devShells.default = pkgs.mkShell {
-            packages = with pkgs; [
-              nil
-            ];
-          };
-
-	  haxe-support = haxe-lib;
-        };
-    };
+      haxe-support = haxe-lib;
+      lib.haxe-support = {
+        inherit haxe-lib.buildHaxeLib haxe-lib.installLibHaxe;
+      };
+    }
 }
