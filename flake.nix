@@ -26,5 +26,5 @@
       lib.haxe-support = {
         inherit haxe-lib;
       };
-    }
+    };
 }
