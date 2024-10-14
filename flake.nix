@@ -24,7 +24,7 @@
 
       haxe-support = haxe-lib;
       lib.haxe-support = {
-        inherit haxe-lib.buildHaxeLib haxe-lib.installLibHaxe;
+        inherit haxe-lib;
       };
     }
 }
