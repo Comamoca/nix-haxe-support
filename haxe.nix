@@ -30,9 +30,6 @@ let
     echo -n "${version}" > $out/lib/haxe/${withCommas libname}/.current
     cp -dpR ${files} "$out/lib/haxe/${withCommas libname}/${withCommas version}/"
   '';
-in
-with pkgs; {
-  inherit installLibHaxe;
 
   buildHaxeLib =
     { libname
@@ -72,4 +69,12 @@ with pkgs; {
         description = throw "please write meta.description";
       } // attrs.meta;
     });
-}
+
+  lib = {
+    inherit
+      installLibHaxe
+      buildHaxeLib
+      ;
+  };
+in
+lib

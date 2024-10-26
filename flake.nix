@@ -27,6 +27,6 @@
         };
 
         haxe-support = haxe-lib;
-        packages.lib = import ./haxe.nix { inherit pkgs; };
+        lib = import ./haxe.nix { inherit pkgs; };
       });
 }
